@@ -5,6 +5,9 @@
 #include <string.h>
 #include "tris.h"
 
+#define NO 0
+#define YES 1
+
 
 /* -------------------------------------------------------------------------- */
 /* echanger                                                                   */
@@ -56,10 +59,21 @@
 
    structSondes tri_bulle_naif(int *t, int n)
    {
-      int i, j;
+      register int i, j;
       structSondes sondes = {0, 0, 0};
 	
-
+	for(i=n; i>0; i--)
+	{
+		for(j=1; i<n; i++)
+		{
+			sondes.nb_comparaisons++;
+			if(t[j]<t[j-1])
+			{
+				echanger(t, j, (j-1));
+				sondes.nb_echanges++;
+			}
+		}
+	}
    	
      
       return sondes;
@@ -71,10 +85,27 @@
    {
    // A faire : utilisation d'un drapeau (booléen) qui teste que les données sont triées
    // en une lecture des données
-   
-
+   register int i, j;
+	char change = NO;
       structSondes sondes = {0, 0, 0};
-   
+	i=n;
+	do
+	{
+		change = NO;
+		for(j=1; i<n; i++)
+		{
+			sondes.nb_comparaisons++;
+			if(t[j]<t[j-1])
+			{
+				echanger(t, j, (j-1));
+				sondes.nb_echanges++;
+				change= YES;
+			}
+		}
+		i++;
+	}while(i>0 && change);
+   	
+     
       return sondes;
    }
 	
